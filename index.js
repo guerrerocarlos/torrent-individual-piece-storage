@@ -35,7 +35,8 @@ module.exports = function(torrent, opts) {
     return path.join(folder, n+'.piece')
   }
 
-  that.read = function(index, range, cb) {
+  that.get = function(index, range, cb) {
+    console.log('get...', index, range)
     if (typeof range === 'function') return that.read(index, null, range)
     if (!range) range = {}
 
@@ -55,6 +56,7 @@ module.exports = function(torrent, opts) {
   }
 
   var mkdir = function(dir, cb) {
+    console.log('mkdir', dir)
     if (cache.get(dir)) return cb()
     mkdirp(dir, function(err) {
       if (err) return cb(err)
@@ -63,7 +65,9 @@ module.exports = function(torrent, opts) {
     })
   }
 
-  that.write = function(index, buf, cb) {
+  that.put = function(index, buf, cb) {
+    console.log('put...', index)
+    
     if (!cb) cb = noop
     var n = toName(index)
     mkdir(path.dirname(n), function(err) {
